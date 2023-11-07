@@ -1,9 +1,8 @@
 ---
 layout: distill
-title: Sample Blog Post
-description: Your blog post's abstract.
-  This is an example of a distill-style blog post and the main elements it supports.
-date: 2022-12-01
+title: "Autodecoders: Analyzing the Necessity of Explicit Encoders in Generative Modeling"
+description: The traditional autoencoder architecture consists of an encoder and a decoder, the former of which compresses the input into a low-dimensional latent code representation, while the latter aims to reconstruct the original input from the latent code. However, the recently-developed autodecoder architecture skips the encoding step altogether and trains randomly initialized latent codes per sample instead. We aim to test the two architectures on practical generative tasks as well as dive into the theory of autodecoders and why they work along with their benefits.
+date: 2023-11-06
 htmlwidgets: true
 
 # Anonymize when submitting
@@ -11,21 +10,15 @@ htmlwidgets: true
 #   - name: Anonymous
 
 authors:
-  - name: Albert Einstein
-    url: "https://en.wikipedia.org/wiki/Albert_Einstein"
+  - name: Alexis Huang
     affiliations:
-      name: IAS, Princeton
-  - name: Boris Podolsky
-    url: "https://en.wikipedia.org/wiki/Boris_Podolsky"
+      name: Massachusetts Institute of Technology
+  - name: Seok Kim
     affiliations:
-      name: IAS, Princeton
-  - name: Nathan Rosen
-    url: "https://en.wikipedia.org/wiki/Nathan_Rosen"
-    affiliations:
-      name: IAS, Princeton
+      name: Massachusetts Institute of Technology
 
 # must be the exact same name as your blogpost
-bibliography: 2022-12-01-distill-example.bib  
+bibliography: 2023-11-09-autodecoders.bib
 
 # Add a table of contents to your post.
 #   - make sure that TOC names match the actual section names
@@ -34,7 +27,7 @@ toc:
   - name: Equations
   - name: Images and Figures
     subsections:
-    - name: Interactive Figures
+      - name: Interactive Figures
   - name: Citations
   - name: Footnotes
   - name: Code Blocks
@@ -75,7 +68,6 @@ $$
 $$
 
 Note that MathJax 3 is [a major re-write of MathJax](https://docs.mathjax.org/en/latest/upgrading/whats-new-3.0.html) that brought a significant improvement to the loading and rendering speed, which is now [on par with KaTeX](http://www.intmath.com/cg5/katex-mathjax-comparison.php).
-
 
 ## Images and Figures
 
@@ -140,7 +132,7 @@ exists in the `assets/html/[SUBMISSION NAME]/` directory in this repository's ro
 To embed it into any page, simply insert the following code anywhere into your page.
 
 ```markdown
-{% raw %}{% include [FIGURE_NAME].html %}{% endraw %} 
+{% raw %}{% include [FIGURE_NAME].html %}{% endraw %}
 ```
 
 For example, the following code can be used to generate the figure underneath it.
@@ -162,9 +154,17 @@ fig.write_html('./assets/html/2022-12-01-distill-example/plotly_demo_1.html')
 And then include it with the following:
 
 ```html
-{% raw %}<div class="l-page">
-  <iframe src="{{ 'assets/html/2022-12-01-distill-example/plotly_demo_1.html' | relative_url }}" frameborder='0' scrolling='no' height="600px" width="100%"></iframe>
-</div>{% endraw %}
+{% raw %}
+<div class="l-page">
+  <iframe
+    src="{{ 'assets/html/2022-12-01-distill-example/plotly_demo_1.html' | relative_url }}"
+    frameborder="0"
+    scrolling="no"
+    height="600px"
+    width="100%"
+  ></iframe>
+</div>
+{% endraw %}
 ```
 
 Voila!
@@ -185,14 +185,14 @@ If you have an appendix, a bibliography is automatically created and populated i
 Distill chose a numerical inline citation style to improve readability of citation dense articles and because many of the benefits of longer citations are obviated by displaying more information on hover.
 However, we consider it good style to mention author last names if you discuss something at length and it fits into the flow well — the authors are human and it’s nice for them to have the community associate them with their work.
 
-***
+---
 
 ## Footnotes
 
 Just wrap the text you would like to show up in a footnote in a `<d-footnote>` tag.
 The number of the footnote will be automatically generated.<d-footnote>This will become a hoverable footnote.</d-footnote>
 
-***
+---
 
 ## Code Blocks
 
@@ -202,7 +202,7 @@ This example is in C++.
 All you have to do is wrap your code in a liquid tag:
 
 {% raw  %}
-{% highlight c++ linenos %}  <br/> code code code <br/> {% endhighlight %}
+{% highlight c++ linenos %} <br/> code code code <br/> {% endhighlight %}
 {% endraw %}
 
 The keyword `linenos` triggers display of line numbers. You can try toggling it on or off yourself below:
@@ -225,11 +225,12 @@ string myString;
     }
 
     return 0;
+
 }
 
 {% endhighlight %}
 
-***
+---
 
 ## Diagrams
 
@@ -240,11 +241,12 @@ Below, we generate a few examples of such diagrams using languages such as [merm
 Also, be mindful of that because of diagram generation the fist time you build your Jekyll website after adding new diagrams will be SLOW.
 For any other details, please refer to [jekyll-diagrams](https://github.com/zhustec/jekyll-diagrams){:target="\_blank"} README.
 
-**Note:** This is not supported for local rendering! 
+**Note:** This is not supported for local rendering!
 
 The diagram below was generated by the following code:
 
 {% raw %}
+
 ```
 {% mermaid %}
 sequenceDiagram
@@ -254,6 +256,7 @@ sequenceDiagram
     John-->>Alice: Great!
 {% endmermaid %}
 ```
+
 {% endraw %}
 
 {% mermaid %}
@@ -264,7 +267,7 @@ Alice->>John: Hello John, how are you?
 John-->>Alice: Great!
 {% endmermaid %}
 
-***
+---
 
 ## Blockquotes
 
@@ -273,8 +276,7 @@ John-->>Alice: Great!
     —Anais Nin
 </blockquote>
 
-***
-
+---
 
 ## Layouts
 
@@ -320,13 +322,13 @@ It does not interrupt the normal flow of `.l-body` sized text except on mobile s
   <p>.l-gutter</p>
 </div>
 
-***
+---
 
 ## Other Typography?
 
-Emphasis, aka italics, with *asterisks* (`*asterisks*`) or _underscores_ (`_underscores_`).
+Emphasis, aka italics, with _asterisks_ (`*asterisks*`) or _underscores_ (`_underscores_`).
 
-Strong emphasis, aka bold, with **asterisks** or __underscores__.
+Strong emphasis, aka bold, with **asterisks** or **underscores**.
 
 Combined emphasis with **asterisks and _underscores_**.
 
@@ -334,9 +336,9 @@ Strikethrough uses two tildes. ~~Scratch this.~~
 
 1. First ordered list item
 2. Another item
-⋅⋅* Unordered sub-list. 
-1. Actual numbers don't matter, just that it's a number
-⋅⋅1. Ordered sub-list
+   ⋅⋅\* Unordered sub-list.
+3. Actual numbers don't matter, just that it's a number
+   ⋅⋅1. Ordered sub-list
 4. And another item.
 
 ⋅⋅⋅You can have properly indented paragraphs within list items. Notice the blank line above, and the leading spaces (at least one, but we'll use three here to also align the raw Markdown).
@@ -345,9 +347,11 @@ Strikethrough uses two tildes. ~~Scratch this.~~
 ⋅⋅⋅Note that this line is separate, but within the same paragraph.⋅⋅
 ⋅⋅⋅(This is contrary to the typical GFM line break behaviour, where trailing spaces are not required.)
 
-* Unordered list can use asterisks
-- Or minuses
-+ Or pluses
+- Unordered list can use asterisks
+
+* Or minuses
+
+- Or pluses
 
 [I'm an inline-style link](https://www.google.com)
 
@@ -361,8 +365,8 @@ Strikethrough uses two tildes. ~~Scratch this.~~
 
 Or leave it empty and use the [link text itself].
 
-URLs and URLs in angle brackets will automatically get turned into links. 
-http://www.example.com or <http://www.example.com> and sometimes 
+URLs and URLs in angle brackets will automatically get turned into links.
+http://www.example.com or <http://www.example.com> and sometimes
 example.com (but not on Github, for example).
 
 Some text to show that the reference links can follow later.
@@ -373,10 +377,10 @@ Some text to show that the reference links can follow later.
 
 Here's our logo (hover to see the title text):
 
-Inline-style: 
+Inline-style:
 ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
 
-Reference-style: 
+Reference-style:
 ![alt text][logo]
 
 [logo]: https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2"
@@ -387,45 +391,44 @@ Inline `code` has `back-ticks around` it.
 var s = "JavaScript syntax highlighting";
 alert(s);
 ```
- 
+
 ```python
 s = "Python syntax highlighting"
 print s
 ```
- 
+
 ```
-No language indicated, so no syntax highlighting. 
+No language indicated, so no syntax highlighting.
 But let's throw in a <b>tag</b>.
 ```
 
 Colons can be used to align columns.
 
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
+| Tables        |      Are      |  Cool |
+| ------------- | :-----------: | ----: |
 | col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+| col 2 is      |   centered    |   $12 |
+| zebra stripes |   are neat    |    $1 |
 
 There must be at least 3 dashes separating each header cell.
-The outer pipes (|) are optional, and you don't need to make the 
+The outer pipes (|) are optional, and you don't need to make the
 raw Markdown line up prettily. You can also use inline Markdown.
 
-Markdown | Less | Pretty
---- | --- | ---
-*Still* | `renders` | **nicely**
-1 | 2 | 3
+| Markdown | Less      | Pretty     |
+| -------- | --------- | ---------- |
+| _Still_  | `renders` | **nicely** |
+| 1        | 2         | 3          |
 
 > Blockquotes are very handy in email to emulate reply text.
 > This line is part of the same quote.
 
 Quote break.
 
-> This is a very long line that will still be quoted properly when it wraps. Oh boy let's keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can *put* **Markdown** into a blockquote. 
-
+> This is a very long line that will still be quoted properly when it wraps. Oh boy let's keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can _put_ **Markdown** into a blockquote.
 
 Here's a line for us to start with.
 
-This line is separated from the one above by two newlines, so it will be a *separate paragraph*.
+This line is separated from the one above by two newlines, so it will be a _separate paragraph_.
 
 This line is also a separate paragraph, but...
-This line is only separated by a single newline, so it's a separate line in the *same paragraph*.
+This line is only separated by a single newline, so it's a separate line in the _same paragraph_.
