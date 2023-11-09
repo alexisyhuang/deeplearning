@@ -10,10 +10,10 @@ htmlwidgets: true
 #   - name: Anonymous
 
 authors:
-  - name: Alexis Huang
+  - name: Seok Kim
     affiliations:
       name: Massachusetts Institute of Technology
-  - name: Seok Kim
+  - name: Alexis Huang
     affiliations:
       name: Massachusetts Institute of Technology
 
@@ -66,11 +66,11 @@ For our project, we are planning to investigate the autodecoder network for gene
 
 Autoencoders have been extensively used in representation learning, comprising of the encoder network, which takes a data sample input and translates it to a lower-dimensional latent representation, and the decoder network, which reconstructs the data from this encoding. By learning a compressed, distributed representation of the data, autoencoders greatly assist with dimensionality reduction. This process is illustrated in the example below, showing an image sample from the MNIST dataset before and after being processed by the encoder-decoder network.
 
-{% include figure.html path="assets/img/2023-11-06/assets/autoencoder-mnist-1536x561.png" class="img-fluid rounded z-depth-1" %}
+![mnsit with autoencoder](/assets/img/2023-11-06/autoencoder-mnist-1536x561.png)
 
 In contrast, the autodecoder network operates without an encoder network for learning latent codes. Rather than using the encoder to encode the input into a low-dimensional latent code, each sample in the training set starts with a randomly initialized latent code, and the latent codes and the decoder weights are both updated during the training time. For inference, the latent vector for a given sample is determined through an additional optimization loop. This process is also modeled on an image sample from the MNIST dataset in the figure below.
 
-{% include figure.html path="assets/img/2023-11-06/assets/autodecoder-mnist-1536x761.png" class="img-fluid rounded z-depth-1" %}
+![mnsit with autodecoder](/assets/img/2023-11-06/autodecoder-mnist-1536x761.png)
 
 
 ### Applications
