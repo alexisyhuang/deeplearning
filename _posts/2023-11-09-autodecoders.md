@@ -68,6 +68,12 @@ Autoencoders have been extensively used in representation learning, comprising o
 
 In contrast, the autodecoder network operates without an encoder network for learning latent codes. Rather than using the encoder to encode the input into a low-dimensional latent code, each sample in the training set starts with a randomly initialized latent code, and the latent codes and the decoder weights are both updated during the training time. For inference, the latent vector for a given sample is determined through an additional optimization loop.
 
+<img src="/assets/img/2023-11-06/autoencoder_schematic.png"
+     alt="Markdown Monster icon"
+     style="float: left; margin-right: 10px;" />
+
+{% include figure.html path="/assets/img/2023-11-06/autoencoder_schematic.png" class="img-fluid" %}
+
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.html path="/assets/img/2023-11-06/autoencoder_schematic.png" %}
