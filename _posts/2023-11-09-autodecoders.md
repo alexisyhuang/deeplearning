@@ -64,14 +64,11 @@ For our project, we are planning to investigate the autodecoder network for gene
 
 ### Background
 
-Autoencoders have been extensively used in representation learning, comprising of the encoder network, which takes a data sample input and translates it to a lower-dimensional latent representation, and the decoder network, which reconstructs the data from this encoding. By learning a compressed, distributed representation of the data, autoencoders greatly assist with dimensionality reduction. This process is illustrated in the example below, showing an image sample from the MNIST dataset before and after being processed by the encoder-decoder network.
+Autoencoders have been extensively used in representation learning, comprising of the encoder network, which takes a data sample input and translates it to a lower-dimensional latent representation, and the decoder network, which reconstructs the data from this encoding. By learning a compressed, distributed representation of the data, autoencoders greatly assist with dimensionality reduction.
 
-![mnsit with autoencoder](/assets/img/2023-11-06/autoencoder-mnist-1536x561.png)
+In contrast, the autodecoder network operates without an encoder network for learning latent codes. Rather than using the encoder to encode the input into a low-dimensional latent code, each sample in the training set starts with a randomly initialized latent code, and the latent codes and the decoder weights are both updated during the training time. For inference, the latent vector for a given sample is determined through an additional optimization loop.
 
-In contrast, the autodecoder network operates without an encoder network for learning latent codes. Rather than using the encoder to encode the input into a low-dimensional latent code, each sample in the training set starts with a randomly initialized latent code, and the latent codes and the decoder weights are both updated during the training time. For inference, the latent vector for a given sample is determined through an additional optimization loop. This process is also modeled on an image sample from the MNIST dataset in the figure below.
-
-![mnsit with autodecoder](/assets/img/2023-11-06/autodecoder-mnist-1536x761.png)
-
+![mnsit with autoencoder](/assets/img/2023-11-06/autoencoder_schematic.png)
 
 ### Applications
 One notable application of autodecoder networks is in 3D scene reconstruction. Traditional autoencoders tend to learn a single global latent code, making them less suitable for scenes with multiple objects and complex compositional structures. On the other hand, autodecoders can learn local latent codes, allowing for more efficient performance on scenes with multiple objects. This is particularly valuable in computer vision tasks to understand and reconstruct complex scenes. 
