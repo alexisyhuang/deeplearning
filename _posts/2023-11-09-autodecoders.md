@@ -76,33 +76,35 @@ Sitzmann et al. (2022) introduced a novel neural scene representation called Lig
 
 Scene Representation Networks (SRNs) represent scenes as continuous functions without knowledge of depth or shape, allowing for generalization and applications including few-shot reconstruction. SRNs, introduced by Sitzmann, Zollhöfer, and Wetzstein (2019), represent both the geometry and appearance of a scene, and are able to accomplish tasks such as novel view synthesis and shape interpolation from unsupervised training on sets of 2D images. An autodecoder framework is used to find the latent vectors that characterize the different shapes and appearance properties of scenes.
 
-{% include figure.html path="/assets/img/2023-11-09-autodecoders/autoencoder_schematic.png" class="img-fluid" %}
-
-<style>
-  .image-container {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .image-container img {
-    width: 50%;
-    padding: 2px;
-    border: 2px solid #000;
-  }
-</style>
-
-<div class="image-container">
-  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress1.png" class="img-fluid"%}
-  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress2.png" class="img-fluid"%}
-  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress3.png" class="img-fluid"%}
-  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress4.png" class="img-fluid"%}
-</div>
-
 ### Methodology
 
-## Traditional Autoencoder
+#### Traditional Autoencoder
 
 To establish a baseline, we first trained a convolutional autoencoder network containing both an encoder and decoder on a version of the MNIST dataset normalized and padded to contain 32x32 images. For our autoencoder architecture, we  utilized convolutional layers with ReLU nonlinearity.
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoderloss.png" class="img-fluid" caption="The training and validation losses from the training loop for the autoencoder."%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/tsne_autodecoder.png" class="img-fluid" caption="The training and validation losses from the training loop for the autoencoder." caption="The latent space learned by the autoencoder, color-coded by digit label and visualized through a 2-dimensional t-SNE plot. We see the expected result, with consistency and separation."%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoderloss.png" class="img-fluid" caption="The training and validation losses from the training loop for the autoencoder." caption="A sample output from an unseen image after training. We can see that our small convolutional autoencoder does a fairly good job at learning how to compress simple information into a single latent code."%}
+
+#### Autodecoder
+
+We implemented and trained an autodecoder on the same dataset by creating a convolutional decoder that takes latent codes as an input and upscales them to a full image. We utilized transpose convolutions to upscale the images while additionally concatenating normalized coordinates to include positional information, along with leaky ReLU layers for nonlinearity.
+
+For training, the latent codes for 10,000 images in our training set were randomly initialized. The loss for our autodecoder then included three components: the reconstruction loss; the latent loss, which encourages latent values to be closer to zero in order to encourage a compact latent space; and the L2 weight regularization, which prevents the decoder from overfitting to the training set by encouraging the model weights to be sparse. 
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autodecoderloss.png" class="img-fluid" caption="The training and validation losses from the training loop for the autoencoder." caption="The training and validation losses from the training loop for the autodecoder. The validation loss has no actual meaning in the autodecoder framework, as new images would have a randomly initialized latent code, and was included simply to demonstrate this feature."%}
+
+Below are progressive reconstructions on the training data performed by the autodecoder as it trained and optimized both the decoder weights and training set’s latent codes. We observe that the digits’ general forms were learned before the exact shapes, which implies good concentration and consistency of the latent space between digits of the same class.
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/progress1.png" class="img-fluid"%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/progress2.png" class="img-fluid"%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/progress3.png" class="img-fluid"%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/progress4.png" class="img-fluid" caption="Progressive reconstructions  from top to bottom (model outputs compared to ground truth): 1. Decoding a randomly initialized latent code outputs nonsense. 2. The correct digit is reconstructed, implying that the latent space is improving, but the specific shape differs from that of the ground truth image. 3. The output’s shape begins to better match that of the ground truth. 4. The autodecoder and latent code are optimized to be able to effectively reconstruct the ground truth image."%}
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/tsne_autodecoder.png" class="img-fluid" caption="The latent space learned by the autodecoder, also visualized through a 2-dimensional t-SNE plot. We again see consistency, but notice that the clusters are more compact. While distance between clusters in  t-SNE plots do not have a definite meaning, this could potentially imply that features of shapes, rather than the shapes themselves, are better learned, as different digits share similar features (curves, straight lines, etc)."%}
+
+Upon training the autodecoder, for inference on a new image we first freeze the decoder weights and then run an additional optimization loop over a randomly initialized latent code.
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autodecodersampleoutput.png" class="img-fluid" caption="Output from the trained autodecoder on a new image from the test set"%} 
+
 
 ### Plan
 
