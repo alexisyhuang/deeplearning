@@ -77,11 +77,25 @@ Sitzmann et al. (2022) introduced a novel neural scene representation called Lig
 Scene Representation Networks (SRNs) represent scenes as continuous functions without knowledge of depth or shape, allowing for generalization and applications including few-shot reconstruction. SRNs, introduced by Sitzmann, Zollhöfer, and Wetzstein (2019), represent both the geometry and appearance of a scene, and are able to accomplish tasks such as novel view synthesis and shape interpolation from unsupervised training on sets of 2D images. An autodecoder framework is used to find the latent vectors that characterize the different shapes and appearance properties of scenes.
 
 {% include figure.html path="/assets/img/2023-11-09-autodecoders/autoencoder_schematic.png" class="img-fluid" %}
-<div style="display: flex; justify-content: space-between;">
-  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress1.png" class="img-fluid" style="width: 25%;" %}
-  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress2.png" class="img-fluid" style="width: 25%;" %}
-  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress3.png" class="img-fluid" style="width: 25%;" %}
-  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress4.png" class="img-fluid" style="width: 25%;" %}
+
+<style>
+  .image-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .image-container img {
+    width: 25%;
+    padding: 10px;
+    border: 2px solid #000;
+  }
+</style>
+
+<div class="image-container">
+  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress1.png" class="img-fluid"%}
+  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress2.png" class="img-fluid"%}
+  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress3.png" class="img-fluid"%}
+  {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress4.png" class="img-fluid"%}
 </div>
 
 ### Applications
