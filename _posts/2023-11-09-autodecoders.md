@@ -85,8 +85,8 @@ Scene Representation Networks (SRNs) represent scenes as continuous functions wi
   }
 
   .image-container img {
-    width: 25%;
-    padding: 10px;
+    width: 50%;
+    padding: 2px;
     border: 2px solid #000;
   }
 </style>
