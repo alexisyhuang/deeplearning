@@ -26,7 +26,7 @@ bibliography: 2023-11-09-autodecoders.bib
 toc:
   - name: Introduction
   - name: Related Works
-  - name: Experimentation
+  - name: Methodology
   - name: Conclusion
   - name: References
 
@@ -98,9 +98,11 @@ Scene Representation Networks (SRNs) represent scenes as continuous functions wi
   {% include figure.html path="/assets/img/2023-12-11-autodecoders/progress4.png" class="img-fluid"%}
 </div>
 
-### Applications
+### Methodology
 
-One notable application of autodecoder networks is in 3D scene reconstructions. Traditional autoencoders tend to learn a single global latent code, making them less suitable for scenes with multiple objects and complex compositional structures. On the other hand, autodecoders can learn local latent codes, allowing for more efficient performance on scenes with multiple objects. This is particularly valuable in inverse graphics tasks to understand and reconstruct novel views of complex scenes.
+## Traditional Autoencoder
+
+To establish a baseline, we first trained a convolutional autoencoder network containing both an encoder and decoder on a version of the MNIST dataset normalized and padded to contain 32x32 images. For our autoencoder architecture, we  utilized convolutional layers with ReLU nonlinearity.
 
 ### Plan
 
