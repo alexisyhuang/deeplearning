@@ -1,7 +1,7 @@
 ---
 layout: distill
 title: "To Encode or Not To Encode: The Case for the Encoder-free Autodecoder Architecture"
-description: While the traditional autoencoder architecture consists of an encoder and a decoder in order to compress and reconstruct information with only the most prominent features, some recent work have begun to utilize an alternate framework, the autodecoder, in specific applications. Skipping the encoder network altogether and learning latent codes directly as parameters, we aim to compare the two architectures on practical reconstruction tasks as well as dive into the theory of autodecoders and why they work, along with certain novel features that they bring.
+description: While the traditional autoencoder architecture consists of an encoder and a decoder to compress and reconstruct information with only the most prominent features, some recent work have begun to utilize an alternate framework, the autodecoder, in specific applications in the field of representation learning. Skipping the encoder network altogether and learning latent codes directly as parameters, we aim to compare the two architectures on practical reconstruction tasks as well as dive into the theory of autodecoders and why they work, along with certain novel features that they bring.
 date: 2023-12-11
 htmlwidgets: true
 
@@ -59,9 +59,9 @@ Autoencoders have been a part of the neural network landscape for decades, first
 
 Autoencoders comprise of the encoder network, which takes a data sample input and translates it to a lower-dimensional latent representation consisting of only the most necessary features, and the decoder network, which attempts to reconstruct the original data from this encoding. By learning a compressed, distributed representation of the data, the latent space learned by autoencoders is usable for a plethora of downstream tasks.
 
-With traditional autoencoders, both the encoder and decoder are trained, but for certain applications— particularly generative tasks— only the decoder is utilized for inference. Because the encoder is not used at test time, training an encoder may not be an effective use of computational resources; the autodecoder is an alternative architecture that operates without an encoder network that brings some novel benefits.
+With traditional autoencoders, both the encoder and decoder are trained, but for certain applications— particularly generative tasks— only the decoder is utilized for inference. Because the itself encoder is not used at test time, training an encoder may not be an effective use of computational resources; the autodecoder is an alternative architecture that operates without an encoder network and brings some novel benefits.
 
-Rather than using the encoder to encode an input into a low-dimensional latent code, each sample in the training set begins with a randomly initialized latent code, and the latent codes and decoder weights are updated jointly during training time. For inference on new data, the latent vector for a given sample is also randomly initialized and updated through an additional optimization loop with the decoder's frozen weights.
+Rather than using the encoder to encode an input into a low-dimensional latent code, each sample in the training set begins with a randomly initialized latent code, and the latent codes and decoder weights are updated jointly during training time. For inference on new data, the latent vector for a given sample is then also randomly initialized and updated through an additional optimization loop with the decoder's frozen weights.
 
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/encoderdecoder.png" class="img-fluid" style="display:block;" caption="The architecture for an autoencoder (top) compared to that of an autodecoder (bottom)."%}
 
@@ -88,7 +88,7 @@ Scene Representation Networks (SRNs) represent scenes as continuous functions wi
 To establish a baseline, we first trained a convolutional autoencoder network containing both an encoder and decoder on a version of the MNIST dataset normalized and padded to contain 32x32 images. For our autoencoder architecture, we utilized convolutional layers with ReLU nonlinearity.
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoderloss.png" class="img-fluid" caption="The training and validation losses from the training loop for the autoencoder."%}
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/tsne_autodecoder.png" class="img-fluid" caption="The training and validation losses from the training loop for the autoencoder." caption="The latent space learned by the autoencoder, color-coded by digit label and visualized through a 2-dimensional t-SNE plot. We see the expected result, with consistency and separation."%}
-{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoderloss.png" class="img-fluid" caption="The training and validation losses from the training loop for the autoencoder." caption="A sample output from an unseen image after training. We can see that our small convolutional autoencoder does a fairly good job at learning how to compress simple information into a single latent code and decode it into its original form."%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencodersampleoutput.png" class="img-fluid" caption="The training and validation losses from the training loop for the autoencoder." caption="A sample output from an unseen image after training. We can see that our small convolutional autoencoder does a fairly good job at learning how to compress simple information into a single latent code and decode it into its original form."%}
 
 #### Autodecoder
 
@@ -97,7 +97,7 @@ We implemented and trained an autodecoder on the same dataset by creating a conv
 For training, the latent codes for 10,000 images in our training set were randomly initialized. The loss for our autodecoder then included three components: the reconstruction loss; the latent loss, which encourages latent values to be closer to zero in order to encourage a compact latent space; and the L2 weight regularization, which prevents the decoder from overfitting to the training set by encouraging the model weights to be sparse.
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/lossfn.png" class="img-fluid" caption="The loss function used to train the autodecoder. During inference, a custom loss function can be used based on the application."%}
 
-{% include figure.html path="/assets/img/2023-12-11-autodecoders/autodecoderloss.png" class="img-fluid" caption="The training and validation losses from the training loop for the autoencoder." caption="The training and validation losses from the training loop for the autodecoder. The validation loss has no actual meaning in the autodecoder framework, as new images would have a randomly initialized latent code, and was included simply to demonstrate this feature."%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autodecoderloss.png" class="img-fluid" caption="The training and validation losses from the training loop for the autoencoder." caption="The training and validation losses from the training loop for the autodecoder. The validation loss has no actual meaning in the autodecoder framework, as new images would have a randomly initialized latent code and so would output nonsense. This loss was included simply to demonstrate this feature."%}
 
 Below are progressive reconstructions on the training data performed by the autodecoder as it trained and optimized both the decoder weights and training set’s latent codes. We observe that the digits’ general forms were learned before the exact shapes, which implies good concentration and consistency of the latent space between digits of the same class.
 
@@ -118,32 +118,32 @@ One benefit of the autodecoder framework is that because we have an additional o
 
 We demonstrate below that we were able to replicate this feature in our experiments by applying center masks to our images before autoencoding or decoding.
 
-1: We trained a traditional autoencoder with generic reconstruction loss, and input an image with a mask in the center. The output is expected, as the autoencoder learned to reconstruct whatever it saw, and so the empty space from the mask is included in the result.
+1: We trained a traditional **autoencoder** with generic reconstruction loss, and input an image with a mask in the center. The output is expected, as the autoencoder learned to reconstruct whatever it saw, and so the empty space from the mask is included in the result.
 
-{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_input_7.png" class="img-fluid" width="50%" caption="The input image"%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_input_7.png" class="img-fluid" width="50" caption="The input image"%}
 
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_output_7.png" class="img-fluid" caption="The reconstructed image compared to the image without the mask."%}
 
-2: We trained a traditional autoencoder with reconstruction loss without considering a centered square area and input an unmodified image. The output is again expected, as the autoencoder was trained to fully disregard the center area, and so the output is empty in that region.
+2: We trained a traditional **autoencoder** with reconstruction loss without considering a centered square area and input an unmodified image. The output is again expected, as the autoencoder was trained to fully disregard the center area, and so the output is empty in that region.
 
-{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_input_4.png" class="img-fluid" caption="The area of the images that the autoencoder is trained to learn on."%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_input_4.png" class="img-fluid" width="50" caption="The area of the images that the autoencoder is trained to learn on."%}
 
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_output_4.png" class="img-fluid" caption="The model output compared to the original image."%}
 
-3: We trained an autodecoder with generic reconstruction loss, and during the optimization loop for inference we utilized a custom loss function that did not consider the masked area. However, in this case, we are still able to reconstruct the original image to varying levels of success because of the latent space we originally learned through the training loop.
+3: We trained an **autodecoder** with generic reconstruction loss, and during the optimization loop for inference we utilized a custom loss function that did not consider the masked area. However, in this case, we are still able to reconstruct the original image to varying levels of success because of the latent space we originally learned through the training loop.
 
 Shown below are the areas optimized in the loss functions, along with the decoded output and original image.
 
-{% include figure.html path="/assets/img/2023-12-11-autodecoders/8x8mask_input.png" class="img-fluid"%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/8x8mask_input.png" class="img-fluid" width="50"%}
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/8x8mask_output.png" class="img-fluid" caption="An 8x8 mask."%}
 
-{% include figure.html path="/assets/img/2023-12-11-autodecoders/12x12mask_input.png" class="img-fluid"%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/12x12mask_input.png" class="img-fluid" width="50"%}
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/12x12maskoutput.png" class="img-fluid" caption="A 12x12 mask. Even with significant information about the digit missing, the autodecoder is able to sufficiently reconstruct the ground truth image based on the learned information."%}
 
-{% include figure.html path="/assets/img/2023-12-11-autodecoders/16x16mask_input.png" class="img-fluid"%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/16x16mask_input.png" class="img-fluid" width="50"%}
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/16x16mask_output.png" class="img-fluid" caption="A 16x16 mask."%}
 
-{% include figure.html path="/assets/img/2023-12-11-autodecoders/20x20mask_input.png" class="img-fluid"%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/20x20mask_input.png" class="img-fluid" width="50"%}
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/20x20mask_output.png" class="img-fluid" caption="A 20x20 mask. Although the reconstructed digit is ultimately incorrect, we see that we are able to get very close even with extremely limited inputs."%}
 
 To analyze and compare the latent spaces learned by both our autoencoder and autodecoder, we additionally perform linear interpolation (with α=0.5) between the embeddings of two images and include their decoded results below.
@@ -161,9 +161,13 @@ More interesting was the output for the autodecoder, which simply returned an im
 
 ### Conclusion
 
-While autoencoders (and variations such as VAEs) have traditionally been the standard architectures for representation learning, we explore an alternate autodecoder architecture, in which the encoder is excluded and individual latent codes are learned along with the decoder. We investigated the necessity of an explicit encoder in representation learning tasks and the benefits of this alternate encoder-free architecture in certain tasks, in particular incomplete input reconstructions.
+#### Discussion
 
-The autodecoder contains many further applications beyond the scope of the research and experiments introduced in this blog. As an example, the task of prior-based 3D scene reconstruction in the field of computer vision, in which novel views of a 3D scene can be generated from a limited number of static images of that scene along with their camera poses, utilizes the autodecoder architecture to guarantee better out-of-distribution views. While the traditional autoencoder is able to effectively perform inference on input views similar to those shown during training, it struggles with consistency when attempting to generate views of an input image with unseen camera intrinsic and extrinsic parameters, such as a zoomed-in image. This happens because of the inability for the encoder to effectively take in and utilize the camera pose information when learning a representation of the image that gets decoded to an output, which leaves out a lot of information critical to the scene representation. Meanwhile, having both the latent code learning and inference be done solely through the decoder allows for this information to be utilized consistently for both, allowing for out-of-distribution generalized reconstruction for novel viewpoints.
+While autoencoders (and variations such as VAEs) have traditionally been the standard architectures for representation learning, we explore an alternate autodecoder architecture, in which the encoder is excluded and individual latent codes are learned along with the decoder. We investigated the necessity of an explicit encoder in representation learning tasks and found that even without an encoder network, we are able to learn latent representations of input data through optimization of randomly initialized latent codes during the training loop. Through this alternate dimensionality reduction process, we showed that we were still able to learn a consistent latent space on a multi-class dataset. Furthermore, we showed that through the use of an additional optimization loop for inference rather than learned encoder weights, the autodecoder can learn to reconstruct incomplete observations through pixel-level optimizations.
+
+The autodecoder contains many further applications beyond the scope of the research and experiments introduced in this blog. As an example, the task of prior-based 3D scene reconstruction in the field of computer vision, in which novel views of a 3D scene can be generated from a limited number of static images of that scene along with their camera poses, utilizes the autodecoder architecture to guarantee better out-of-distribution views. This task involves the use of camera pose as an additional source of information in addition to input images, something that the encoder itself is unable to integrate when encoding images, leading to the valuable scene representation information being left out. Meanwhile, because the latent code itself is learned in an autodecoder, it is able to use the camera pose to effectively generalize to novel viewpoints. This serves as just one of several examples of the autodecoder being able to carry out tasks normally gatekept by the limitations of the encoder.
+
+#### Limitations
 
 Some limitations of the encoder-free architecture include certain fallbacks discussed in our experiments, including the difficulties in generating satisfactory novel outputs through linear interpolation of the latent space. Furthermore, while the existence of a secondary optimization loop during inference comes with interesting properties such as being able to define unique loss functions for different purposes, this can be more computational or temporally costly than running inputs on a trained encoder for inference. Regardless, as much of the research around the topic has emerged only within the past several years, it can be expected that autodecoders and their unique properties will continue to emerge and evolve and find use in novel applications in the years to come.
 
