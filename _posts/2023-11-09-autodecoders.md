@@ -27,6 +27,7 @@ toc:
   - name: Introduction
   - name: Related Works
   - name: Methodology
+  - name: Experimentation
   - name: Conclusion
   - name: References
 
@@ -106,13 +107,47 @@ Upon training the autodecoder, for inference on a new image we first freeze the 
 {% include figure.html path="/assets/img/2023-12-11-autodecoders/autodecodersampleoutput.png" class="img-fluid" caption="Output from the trained autodecoder on a new image from the test set"%} 
 
 
-### Plan
+### Experimentation
 
-We will start by providing a detailed overview of how autodecoders function in a comprehensive blog post. This will include a thorough explanation of their architecture, training process, and potential applications. We will also discuss the theoretical advantages and disadvantages of autodecoder networks compared to traditional autoencoders.
+One benefit of the autodecoder framework is that because we have an additional optimization loop for each input during inference, we are able to do varying pixel-level reconstructions, while an autoencoder is trained to reconstruct complete images each time.
 
-Then, for the experimental part of our project, we will construct simple versions of both an autoencoder and an autodecoder network. These networks will be similarly trained and evaluated on a common dataset, such as the widely-used MNIST dataset, where we will attempt to generate novel images with both models. We will then conduct a comparative analysis of the performance of the two different networks, highlighting the differences in their performances and their respective strengths and weaknesses. This experiment will give us a good idea of the efficacy of the two different networks as well as how they compare to each other.
+We demonstrate below that we were able to replicate this feature in our experiments by applying center masks to our images before autoencoding / decoding. 
 
-Additionally, we plan to assess whether one network performs better on out-of-distribution generalization tasks. By understanding the potential benefits and drawbacks of autodecoder networks, we can better leverage this innovative approach for a variety of generative tasks and gain insight into their applicability in a broader context.
+1. We trained a traditional autoencoder with generic reconstruction loss and input an image with a mask in the center. The output is expected, as the autoencoder attempts to replicate the image with the mask. 
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_input_7.png" class="img-fluid" caption="The input image"%} 
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_output_7.png" class="img-fluid" caption="The reconstructed image compared to the original image"%} 
+
+2. We trained a traditional autoencoder with reconstruction loss without considering a centered square area and input an unmodified image. The output is again expected, as the autoencoder was trained to disregard the center area, and so the output is empty in that region.
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_input_4.png" class="img-fluid" caption="The areas of the images that the autoencoder is trained to learn on"%}
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_output_4.png" class="img-fluid" caption="The model output compared to the original image"%}
+
+3. We trained an autodecoder with generic reconstruction loss, and during the optimization loop for inference we utilize a custom loss function without considering the masked area. We are still able to reconstruct the original image to varying levels of success because of the latent space we originally learn through the training loop.
+
+Shown below are the areas optimized in the loss functions, along with the decoded output and original image.
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/8x8mask_input.png" class="img-fluid" caption="An 8x8 mask"%}
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/12x12mask_input.png" class="img-fluid" caption="A 12x12 mask. Even with significant information about the digit missing, the autodecoder is able to sufficiently reconstruct the ground truth image."%}
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/16x16mask_input.png" class="img-fluid" caption="A 16x16 mask"%}
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/20x20mask_input.png" class="img-fluid" caption="A 20x20 mask. Although the reconstructed digit is ultimately incorrect, we see that we are able to get very close even with extremely limited inputs."%}
+
+To analyze and compare the latent spaces learned by both our autoencoder and autodecoder, we additionally perform linear interpolation (with \alpha=0.5) between the embeddings of two images and include their decoded results below. 
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autoencoder_interpolation.png" class="img-fluid" caption="The output of the decoded interpolation of two embeddings from the autoencoder"%}
+
+{% include figure.html path="/assets/img/2023-12-11-autodecoders/autodecoder_interpolation.png" class="img-fluid" caption="The output of the decoded interpolation of two embeddings from the autodecoder"%}
+
+The autoencoder output was somewhat expected due to the simplistic nature of the MNSIT dataset, and we can see a merge of the two images. 
+
+More interesting was the output for the autodecoder, which simply returned an image consisting of the pixel average of both images. Some hypotheses for this result include:
+- The shape of the latent space for the learned autodecoder potentially being one that does not pair well with linear interpolation.
+- The inductive bias from the existence of the encoder architecture allowing for better interpolatability.
+
+### Conclusion
 
 ### References
 
